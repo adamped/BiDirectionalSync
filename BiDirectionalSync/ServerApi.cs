@@ -49,6 +49,7 @@ namespace BiDirectionalSync
 					dbRow.Description = update.Description;
 
 				dbRow.LastUpdated = DateTimeOffset.Now;
+				dbRow.ClientLastUpdated = lastUpdated;
 				
 			}
 		}
@@ -77,20 +78,22 @@ namespace BiDirectionalSync
 			{
 				var dbRow = _rows.Single(x => x.Id == row.Id);
 
-				if (dbRow.LastUpdated > row.LastUpdated)
+				if (dbRow.ClientLastUpdated > row.LastUpdated)
 				{
 					// Conflict 
 					// Here you can just do a server, or client wins scenario, on a whole row basis. 
 					// E.g take the servers word or the clients word
 
-					// Server - wins - Ignore changes and just update time.
+					// e.g. Server - wins - Ignore changes and just update time.
 					dbRow.LastUpdated = DateTimeOffset.Now;
+					dbRow.ClientLastUpdated = row.LastUpdated;
 				}
-				else
-				{
+				else // Client is new than server
+				{					
 					dbRow.Name = row.Name;
 					dbRow.Description = row.Description;
 					dbRow.LastUpdated = DateTimeOffset.Now;
+					dbRow.ClientLastUpdated = row.LastUpdated;
 				}
 			}
 		}

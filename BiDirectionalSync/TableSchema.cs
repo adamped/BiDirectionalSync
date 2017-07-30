@@ -22,6 +22,8 @@ namespace BiDirectionalSync
 		// When this row was last updated
 		public DateTimeOffset LastUpdated { get; set; }
 
+		public DateTimeOffset ClientLastUpdated { get; set; }
+
 		// When the row was deleted
 		public DateTimeOffset? Deleted { get; set; }
 
